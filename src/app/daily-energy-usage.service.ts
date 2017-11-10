@@ -14,6 +14,12 @@ export class DailyEnergyUsageService {
 
   getDailyEnergyUsage(id: number): Observable<DailyEnergyUsage> {
     const url = `${this.rootUrl}/${id}/energy/usage/daily`;
-    return this.http.get<DailyEnergyUsage>(url);
+    return this.http.get(url)
+      .map(result => {
+        return new DailyEnergyUsage(result['daily_energy_usage'].map(obj => {
+          let key = Object.keys(obj)[0];
+          return new EnergyUsage(key, obj[key]);
+        }));
+      })
   }
 }
