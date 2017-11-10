@@ -1,4 +1,4 @@
-export class Hero {
+export class Summary {
   score: number;
   score_text: string;
   average_daily_energy_usage: number;
