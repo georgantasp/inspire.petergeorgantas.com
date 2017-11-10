@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Summary } from '../summary';
+import { SummaryService } from '../summary.service';
 
 @Component({
   selector: 'app-summary',
@@ -10,15 +11,21 @@ import { Summary } from '../summary';
 export class SummaryComponent implements OnInit {
 
   summary: Summary = {
-    score:48,
-    score_text: "Your Home Score is an 48. You rank in the middle of the pack. Give us a call to find out how we can help.",
-    average_daily_energy_usage:89,
-    average_daily_temp:47
+    score: 0,
+    score_text: "",
+    average_daily_energy_usage: 0,
+    average_daily_temp: 0
   }
 
-  constructor() { }
+  constructor(private summaryService: SummaryService) { }
 
   ngOnInit() {
+    this.getSummary();
+  }
+  
+  getSummary() {
+    this.summaryService.getSummary(1)
+      .subscribe(summary => this.summary = summary);
   }
 
 }

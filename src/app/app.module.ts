@@ -1,9 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
 import { SummaryComponent } from './summary/summary.component';
+import { SummaryService } from './summary.service';
 
 
 @NgModule({
@@ -12,9 +14,10 @@ import { SummaryComponent } from './summary/summary.component';
     SummaryComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [SummaryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
