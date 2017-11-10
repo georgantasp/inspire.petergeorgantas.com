@@ -1,1 +1,22 @@
-<app-summary *ngIf="homescore && homescore.summary" [summary]="homescore.summary"></app-summary>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col">
+      <h1 class="display-4 text-center">Home Score</h1>
+    </div>
+  </div>
+  
+  <div class="row">
+    <app-summary *ngIf="homescore && homescore.summary" [summary]="homescore.summary"></app-summary>
+  </div>
+  
+  <div class="row">
+  </div>
+  <div class="row" style="margin-top: 1rem">
+    <div class="col">
+      <app-daily-energy-usage
+        *ngIf="homescore && homescore.dailyEnergyUsage"
+        [dailyEnergyUsage]="homescore.dailyEnergyUsage"
+        ></app-daily-energy-usage>
+    </div>
+  </div>
+</div>
