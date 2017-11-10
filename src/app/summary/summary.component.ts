@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Summary } from '../summary';
 import { SummaryService } from '../summary.service';
 
@@ -10,22 +10,10 @@ import { SummaryService } from '../summary.service';
 })
 export class SummaryComponent implements OnInit {
 
-  summary: Summary = {
-    score: 0,
-    score_text: "",
-    average_daily_energy_usage: 0,
-    average_daily_temp: 0
-  }
+  @Input() summary: Summary;
 
-  constructor(private summaryService: SummaryService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.getSummary();
   }
-  
-  getSummary() {
-    this.summaryService.getSummary(1)
-      .subscribe(summary => this.summary = summary);
-  }
-
 }
