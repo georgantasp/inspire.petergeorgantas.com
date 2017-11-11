@@ -5,7 +5,8 @@ import { HomescoreComponent }      from './homescore/homescore.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/homescore/1', pathMatch: 'full' },
-  { path: 'homescore/:id', component: HomescoreComponent }
+  { path: 'homescore/:id', component: HomescoreComponent },
+  { path: '**', redirectTo: '/homescore/1', pathMatch: 'full' }
 ];
 
 
