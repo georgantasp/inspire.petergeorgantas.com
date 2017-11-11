@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { Homescore } from '../homescore';
 import { HomescoreService } from '../homescore.service';
 
@@ -12,14 +14,18 @@ export class HomescoreComponent implements OnInit {
 
   homescore: Homescore|null = null;
 
-  constructor(private homescoreService: HomescoreService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private homescoreService: HomescoreService
+  ) { }
 
   ngOnInit() {
     this.getSummary();
   }
 
   getSummary() {
-    this.homescoreService.getHomescore(1)
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.homescoreService.getHomescore(id)
       .subscribe(homescore => { 
         this.homescore = homescore;
       });

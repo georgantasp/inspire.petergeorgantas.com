@@ -11,6 +11,7 @@ import { HomescoreService } from './homescore.service';
 import { HomescoreComponent } from './homescore/homescore.component';
 import { DailyEnergyUsageService } from './daily-energy-usage.service';
 import { DailyEnergyUsageComponent } from './daily-energy-usage/daily-energy-usage.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DailyEnergyUsageComponent } from './daily-energy-usage/daily-energy-usa
   imports: [
     BrowserModule,
     HttpClientModule,
-    ChartModule
+    ChartModule,
+    AppRoutingModule
   ],
   providers: [SummaryService, HomescoreService, DailyEnergyUsageService],
   bootstrap: [AppComponent]
