@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  OriginPath:
+    Type: String
+    Default: dev
+
+Resources:
+  cert:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: inspire.petergeorgantas.com
+      DomainValidationOptions:
+      - DomainName: inspire.petergeorgantas.com
+        ValidationDomain: petergeorgantas.com
+  s3:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: inspire.petergeorgantas.com
+  s3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref s3
+      PolicyDocument:
+        Statement: 
+        - 
+          Action: 
+            - "s3:GetObject"
+          Effect: "Allow"
+          Resource: 
+            Fn::Join: 
+              - ""
+              - 
+                - "arn:aws:s3:::"
+                - 
+                  Ref: "s3"
+                - "/*"
+          Principal:
+            CanonicalUser: 1b81d33fb41258444d137694ba870321badb3d8cb44c58ba3bef386cab8e2379b76ce90bd8a05f82c9bd509e599c5146
+  distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+        - DomainName: !GetAtt [s3, DomainName]
+          Id: s3Origin
+          OriginPath:
+            !Join
+              - ''
+              - - '/'
+                - !Ref OriginPath
+          S3OriginConfig:
+            OriginAccessIdentity: origin-access-identity/cloudfront/E2Z5QS0HZPP4XG
+        Enabled: 'true'
+        DefaultRootObject: index.html
+        Aliases:
+        - inspire.petergeorgantas.com
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: 'true'
+          ForwardedValues:
+            QueryString: 'false'
+          TargetOriginId: s3Origin
+          ViewerProtocolPolicy : redirect-to-https
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Ref cert
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /
+  route53:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: petergeorgantas.com.
+      Name: inspire.petergeorgantas.com
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt [distribution, DomainName]
+        HostedZoneId: Z2FDTNDATAQYW2 # Always the same for cloudfront
